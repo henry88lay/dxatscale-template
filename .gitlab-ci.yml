@@ -71,10 +71,8 @@ default:
     # Below setting is required to push git tags and changelog to the repo      
     - git remote set-url --push origin https://gitlab-ci-token:${PROJECT_ACCESS_TOKEN}@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
 
-# BUILD_BRANCH defaults to "main" branch for scaled trunk based branching development model
 # TARGETTASKNAME used for scheduling control logic for pipeline execution for scratch org pool creation and cleaning
 variables:
-   BUILD_BRANCH: main
    SCRATCH_ORG_USERNAME:
      value: ""
      description: "Username of the scratchOrg to be deleted, not aliases, e.g. test-xasdasd@example.com"
@@ -181,7 +179,7 @@ quickbuild:
   stage: quickbuild 
   script:
     - echo "Quick Build the packages"
-    - sfdx sfpowerscripts:orchestrator:quickbuild -v "$DEVHUB_ALIAS" --branch "$BUILD_BRANCH" --buildnumber $CI_PIPELINE_ID --diffcheck
+    - sfdx sfpowerscripts:orchestrator:quickbuild -v "$DEVHUB_ALIAS" --branch "$CI_COMMIT_BRANCH" --buildnumber $CI_PIPELINE_ID --diffcheck
   artifacts:
     paths:
       - artifacts/
